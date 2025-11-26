@@ -8,9 +8,6 @@
   <img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" alt="GitHub">
 </div>
 
-![Current Progress Screenshot](./images/portify1.PNG)
-![Current Progress Screenshot](./images/portify2.PNG)
-
 ---
 
 ## Current Implementation Status
