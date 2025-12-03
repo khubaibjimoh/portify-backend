@@ -1,0 +1,10 @@
+E. Missing Features to Add Later (Not urgent)
+Forgot password
+Email verification
+Resend OTP
+Update profile (PUT /me)
+Change password
+Delete account
+Logout
+Refresh tokens
+Rate limiting

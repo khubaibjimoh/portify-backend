@@ -1,20 +1,21 @@
 import express from "express";
 import { registerUser, loginUser } from "../controllers/authController.js";
-import { getMe } from "../controllers/userController.js";
+import { getMe, uploadAvatar, deleteAvatar } from "../controllers/userController.js";
 import { protect } from "../middleware/authMiddleware.js";
 import { upload } from "../middleware/multer.js";
 
 const router = express.Router();
 
+// AUTH
 router.post("/register", registerUser);
 router.post("/login", loginUser);
-router.post("/me/avatar", protect, upload.single("avatar"));
+
+// USER PROFILE
 router.get("/me", protect, getMe);
-// router.get("/me", protect, (req, res) => {
-//   res.json({
-//     success: true,
-//     user: req.user,
-//   });
-// });
+
+// AVATAR UPLOAD (User uploads a profile picture)
+router.post("/me/avatar", protect, upload.single("avatar"), uploadAvatar);
+// AVATAR DELETE (User deletes their profile picture)
+router.delete("/me/avatar", protect, deleteAvatar);
 
 export default router;
