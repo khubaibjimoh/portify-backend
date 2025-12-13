@@ -17,3 +17,13 @@ const projectSchema = new mongoose.Schema(
 );
 
 export default mongoose.model("Project", projectSchema);
+
+
+//portfolioSlug identifies a unique portfolio
+
+// So inside your Portfolio model, add:
+
+// slug: {
+//   type: String,
+//   required: true,
+//   unique: true

@@ -4,9 +4,9 @@ import jwt from "jsonwebtoken";
 
 export const registerUser = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, username } = req.body;
 
-    // 1. Validate fields (you can improve this later)
+    // 1. Validate fields for email, password, and username
     if (!email || !password) {
       return res.status(400).json({
         success: false,
@@ -14,7 +14,14 @@ export const registerUser = async (req, res) => {
       });
     }
 
-    // 2. Check if user already exists
+    if (!username) {
+      return res.status(400).json({
+        success: false,
+        message: "Username is required",
+      });
+    }
+
+    // Check if user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(409).json({
@@ -23,13 +30,23 @@ export const registerUser = async (req, res) => {
       });
     }
 
-    // 3. Hash password
+    //Check if username already exists
+    const usernameExists = await User.findOne({ username });
+    if (usernameExists) {
+      return res.status(409).json({
+        success: false,
+        message: "Username already take",
+      });
+    }
+
+    // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // 4. Create user
+    // Create user
     const user = await User.create({
       email,
       password: hashedPassword,
+      username,
     });
 
     // 5. Create token
@@ -47,6 +64,7 @@ export const registerUser = async (req, res) => {
       user: {
         id: user._id,
         email: user.email,
+        username: user.username,
       },
     });
 
