@@ -1,10 +1,14 @@
 import multer from "multer";
-import path from "path";
+import { CloudinaryStorage } from "multer-storage-cloudinary";
+import cloudinary from "../config/cloudinary.js";
 
-// Store temporarily before Cloudinary upload
-const storage = multer.diskStorage({
-  filename: (_, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname));
+// Cloudinary Storage
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: "upload/avatars",
+    allowed_formats: ["jpg", "jpeg", "png", "webp"],
+    transformation: [{ width: 400, height: 400, crop: "fill" }],
   },
 });
 

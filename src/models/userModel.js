@@ -10,11 +10,20 @@ const userSchema = new mongoose.Schema(
       minlength: [5, "Email must have at least 5 characters"],
     },
 
+    username: {
+      type: String,
+      required: [true, "Username is required"],
+      trim: true,
+      unique: true,
+      minlength: [3, "Username must have at least 3 characters"],
+      lowercase: true,
+    },
+
     password: {
       type: String,
       required: [true, "Password is required"],
       trim: true,
-      select: false, // hide password by default
+      select: false,
     },
 
     fullName: {
@@ -29,26 +38,35 @@ const userSchema = new mongoose.Schema(
       default: false,
     },
 
-    // Used for email verification
+    // EMAIL VERIFICATION
     verificationCode: {
       type: String,
       select: false,
     },
-
     verificationCodeValidation: {
       type: Number,
       select: false,
     },
 
-    // Used for forgot password flow
+    // FORGOT PASSWORD
     forgotPasswordCode: {
       type: String,
       select: false,
     },
-
     forgotPasswordCodeValidation: {
       type: Number,
       select: false,
+    },
+
+    // AVATAR / PROFILE PICTURE
+    avatar: {
+      type: String,
+      default: "",
+    },
+    avatarPublicId: {
+      type: String,
+      select: false,
+      default: "",
     },
   },
   { timestamps: true }
