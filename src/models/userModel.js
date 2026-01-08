@@ -26,6 +26,13 @@ const userSchema = new mongoose.Schema(
       select: false,
     },
 
+    fullName: {
+      type: String,
+      required: [true, "Full name is required"],
+      trim: true,
+      minlength: [3, "Full name must have at least 3 characters"],
+    },
+
     verified: {
       type: Boolean,
       default: false,
