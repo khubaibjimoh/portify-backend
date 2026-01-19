@@ -2,10 +2,11 @@ import User from "../models/userModel.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { generateCode } from "../utils/generateCode.js";
+import envConfig from "../config/env.js";
 
 export const registerUser = async (req, res) => {
   try {
-    const { email, password, fullName } = req.body;
+    const { email, password, fullName, username } = req.body;
 
     // 1. Validate fields for email, password, and username
     if (!email || !password) {
@@ -50,13 +51,14 @@ export const registerUser = async (req, res) => {
       email,
       password: hashedPassword,
       fullName,
+      username,
       verificationCode: code,
       verificationCodeValidation: expiresAt.getTime(),
     });
 
     // 5. Create token
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "7d",
+    const token = jwt.sign({ id: user._id }, envConfig.jwt_secret, {
+      expiresIn: envConfig.jwt_expiry,
     });
 
     // 6. Respond
@@ -67,6 +69,8 @@ export const registerUser = async (req, res) => {
       user: {
         id: user._id,
         email: user.email,
+        fullName: user.fullName,
+        username: user.username,
         code: code,
       },
     });
@@ -133,8 +137,8 @@ export const loginUser = async (req, res) => {
     }
 
     // Issue token
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "7d",
+    const token = jwt.sign({ id: user._id }, envConfig.jwt_secret, {
+      expiresIn: envConfig.jwt_expiry,
     });
 
     return res.json({

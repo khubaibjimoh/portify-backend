@@ -13,10 +13,10 @@ const personalInfoSchema = new mongoose.Schema(
       required: [true, "Job title is required"],
     },
 
-    // profilePic: {
-    //   type: String,
-    //   required: [true, "Profile picture is required"],
-    // },
+    profilePic: {
+      type: String,
+      required: [true, "Profile picture is required"],
+    },
 
     firstName: {
       type: String,
