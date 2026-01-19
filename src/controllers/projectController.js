@@ -1,5 +1,5 @@
 import Project from "../models/projectModel.js";
-import { uploadToCloudinary } from "../utils/uploadToCloudinary.js";
+// import { uploadToCloudinary } from "../utils/uploadToCloudinary.js";
 
 export const createProject = async (req, res) => {
   try {
@@ -15,40 +15,40 @@ export const createProject = async (req, res) => {
   }
 };
 
-export const uploadProjectImage = async (req, res) => {
-  try {
-    if (!req.files)
-      return res.status(400).json({ message: "No images uploaded" });
+// export const uploadProjectImage = async (req, res) => {
+//   try {
+//     if (!req.files)
+//       return res.status(400).json({ message: "No images uploaded" });
 
-    const files = req.files;
+//     const files = req.files;
 
-    const uploadedImages = [];
+//     const uploadedImages = [];
 
-    for (const file of files) {
-      const url = await uploadToCloudinary(file.path);
-      uploadedImages.push(url);
-    }
+//     for (const file of files) {
+//       const url = await uploadToCloudinary(file.path);
+//       uploadedImages.push(url);
+//     }
 
-    // Push into project model
-    const project = await Project.findOne({
-      _id: req.params.id,
-      user: req.user._id,
-    });
+//     // Push into project model
+//     const project = await Project.findOne({
+//       _id: req.params.id,
+//       user: req.user._id,
+//     });
 
-    if (!project) return res.status(404).json({ message: "Project not found" });
+//     if (!project) return res.status(404).json({ message: "Project not found" });
 
-    project.images.push(...uploadedImages);
-    await project.save();
+//     project.images.push(...uploadedImages);
+//     await project.save();
 
-    res.json({ message: "Images uploaded", images: uploadedImages });
-  } catch (error) {
-    console.error("Create project error:", error);
-    res.status(500).json({
-      success: false,
-      message: "Server error",
-    });
-  }
-};
+//     res.json({ message: "Images uploaded", images: uploadedImages });
+//   } catch (error) {
+//     console.error("Create project error:", error);
+//     res.status(500).json({
+//       success: false,
+//       message: "Server error",
+//     });
+//   }
+// };
 
 export const getUserProject = async (req, res) => {
   try {

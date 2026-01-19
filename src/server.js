@@ -1,5 +1,4 @@
 import express from "express";
-import dotenv from "dotenv";
 import helmet from "helmet";
 import cors from "cors";
 import cookieParser from "cookie-parser";
@@ -7,14 +6,9 @@ import { connectDB } from "./config/db.js";
 import route from "./routes/index.js";
 import errorHandler from "./middleware/errorHandler.js";
 import logger from "./utils/logger.js";
+import envConfig from "./config/env.js";
 
-dotenv.config();
 connectDB();
-
-console.log(
-  "Cloudinary key:",
-  process.env.CLOUDINARY_API_KEY ? "LOADED" : "MISSING",
-);
 
 const app = express();
 
@@ -49,5 +43,5 @@ app.use((req, res, next) => {
 // Global error handler
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 5000;
+const PORT = envConfig.port;
 app.listen(PORT, () => logger.info(`Server running on port ${PORT}`));

@@ -6,7 +6,6 @@ const experienceSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
-      unique: true,
     },
 
     jobTitle: {
@@ -48,6 +47,7 @@ const experienceSchema = new mongoose.Schema(
 
     images: {
       type: [String],
+      required: [true, "Image is required"],
     },
 
     description: {
