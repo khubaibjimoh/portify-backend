@@ -2,8 +2,9 @@
   "name": "portify-backend",
   "version": "1.0.0",
   "description": "Backend API for Portfolio Builder (Node.js)",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
+    "start": "node src/server.js",
     "dev": "nodemon src/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
