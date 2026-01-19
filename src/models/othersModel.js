@@ -6,7 +6,6 @@ const othersSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
-      unique: true,
     },
 
     title: {
@@ -23,7 +22,7 @@ const othersSchema = new mongoose.Schema(
       minlength: [3, "Description must have at least 3 characters"],
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export default mongoose.model("Others", othersSchema);

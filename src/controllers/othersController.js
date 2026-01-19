@@ -2,7 +2,7 @@ import Others from "../models/othersModel.js";
 
 export const createOthers = async (req, res) => {
   try {
-    const data = { ...req.body, owner: req.user.id };
+    const data = { ...req.body, user: req.user.id };
     const others = await Others.create(data);
     res.status(201).json(others);
   } catch (error) {
@@ -16,8 +16,8 @@ export const createOthers = async (req, res) => {
 
 export const getUserOthers = async (req, res) => {
   try {
-    const otherss = await Others.find({ owner: req.user.id });
-    res.json(otherss);
+    const others = await Others.find({ user: req.user.id });
+    res.json(others);
   } catch (error) {
     console.error("Create others error:", error);
     res.status(500).json({
@@ -31,7 +31,7 @@ export const getOthersById = async (req, res) => {
   try {
     const others = await Others.findOne({
       _id: req.params.id,
-      owner: req.user.id,
+      user: req.user.id,
     });
     if (!others) return res.status(404).json({ message: "Not found" });
     res.json(others);
@@ -47,9 +47,9 @@ export const getOthersById = async (req, res) => {
 export const updateOthers = async (req, res) => {
   try {
     const others = await Others.findOneAndUpdate(
-      { _id: req.params.id, owner: req.user.id },
+      { _id: req.params.id, user: req.user.id },
       req.body,
-      { new: true }
+      { new: true },
     );
     if (!others) return res.status(404).json({ message: "Not found" });
     res.json(others);
@@ -66,7 +66,7 @@ export const deleteOthers = async (req, res) => {
   try {
     const others = await Others.findOneAndDelete({
       _id: req.params.id,
-      owner: req.user.id,
+      user: req.user.id,
     });
     if (!others) return res.status(404).json({ message: "Not found" });
     res.json({ message: "Deleted" });

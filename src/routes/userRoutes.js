@@ -4,9 +4,14 @@ import {
   loginUser,
   verifyUser,
 } from "../controllers/authController.js";
-import { getMe, uploadAvatar, deleteAvatar } from "../controllers/userController.js";
+import {
+  getMe,
+  uploadAvatar,
+  deleteAvatar,
+} from "../controllers/userController.js";
 import { protect } from "../middleware/authMiddleware.js";
 import { upload } from "../middleware/multer.js";
+import { uploadFile } from "../middleware/multer.js";
 
 const router = express.Router();
 
@@ -14,13 +19,13 @@ const router = express.Router();
 router.post("/register", registerUser);
 router.post("/verify", verifyUser);
 router.post("/login", loginUser);
-router.post("/me/avatar", protect, upload.single("avatar"), uploadAvatar);
+
+// AVATAR UPLOAD (User uploads a profile picture)
+router.post("/me/avatar", protect, uploadFile, uploadAvatar);
 
 // USER PROFILE
 router.get("/me", protect, getMe);
 
-// AVATAR UPLOAD (User uploads a profile picture)
-router.post("/me/avatar", protect, upload.single("avatar"), uploadAvatar);
 // AVATAR DELETE (User deletes their profile picture)
 router.delete("/me/avatar", protect, deleteAvatar);
 

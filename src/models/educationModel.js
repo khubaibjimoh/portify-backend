@@ -6,7 +6,6 @@ const educationSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
-      unique: true,
     },
 
     degree: {
@@ -50,7 +49,7 @@ const educationSchema = new mongoose.Schema(
       required: false,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export default mongoose.model("Education", educationSchema);

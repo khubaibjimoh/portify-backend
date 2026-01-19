@@ -1,13 +1,17 @@
 import express from "express";
 import {
-  createPublicPortfolio,
-  createPrivatePortfolio,
+  createPortfolio,
+  getMyPortfolio,
+  getPublicPortfolio,
+  updatePortfolio,
 } from "../controllers/portfolioController.js";
 import { protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-router.get("/:username", createPublicPortfolio);
-router.get("/me", protect, createPrivatePortfolio);
+router.get("/", protect, createPortfolio);
+router.get("/me", protect, getMyPortfolio);
+router.get("/:slug", getPublicPortfolio);
+router.put("/", protect, updatePortfolio);
 
 export default router;

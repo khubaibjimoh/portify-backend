@@ -23,40 +23,24 @@ export const getMe = async (req, res) => {
 export const uploadAvatar = async (req, res) => {
   try {
     if (!req.file) {
-      return res.status(400).json({
-        success: false,
-        message: "No file uploaded",
-      });
+      return res.status(400).json({ message: "No file uploaded" });
     }
 
-    // Log file object to see the Cloudinary response
-    console.log("Uploaded file object:", req.file);
+    if (!req.file.mimetype.startsWith("image/")) {
+      return res.status(400).json({ message: "Avatar must be an image" });
+    }
 
-    // If user already has an avatar → delete old one
     if (req.user.avatarPublicId) {
       await cloudinary.uploader.destroy(req.user.avatarPublicId);
     }
 
-    // Multer-storage-cloudinary returns these properties:
-    const imageUrl = req.file.path;       // full URL
-    const publicId = req.file.filename;   // public_id used for deletion
-
-    req.user.avatar = imageUrl;
-    req.user.avatarPublicId = publicId;
-
+    req.user.avatar = req.file.path;
+    req.user.avatarPublicId = req.file.filename;
     await req.user.save();
 
-    res.status(200).json({
-      success: true,
-      message: "Avatar uploaded successfully",
-      avatar: imageUrl,
-    });
-  } catch (error) {
-    console.error("Upload avatar error:", error);
-    res.status(500).json({
-      success: false,
-      message: "Server error",
-    });
+    res.json({ success: true, avatar: req.user.avatar });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 };
 
