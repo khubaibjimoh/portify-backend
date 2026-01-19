@@ -6,13 +6,17 @@ const personalInfoSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
-      unique: true,
     },
 
-    profilePic: {
+    jobTitle: {
       type: String,
-      required: [true, "First name is required"],
+      required: [true, "Job title is required"],
     },
+
+    // profilePic: {
+    //   type: String,
+    //   required: [true, "Profile picture is required"],
+    // },
 
     firstName: {
       type: String,
@@ -37,10 +41,9 @@ const personalInfoSchema = new mongoose.Schema(
 
     socialLink: {
       type: [String],
-      required: [true, "First name is required"],
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export default mongoose.model("PersonalInfo", personalInfoSchema);

@@ -8,6 +8,8 @@ import experienceRoutes from "./experienceRoutes.js";
 import othersRoutes from "./othersRoutes.js";
 import personalInfoRoutes from "./personalInfoRoutes.js";
 import skillRoutes from "./skillRoutes.js";
+import profileProgressRoutes from "./profileProgressRoutes.js";
+import certificationRoutes from "./certificationRoutes.js";
 
 const route = express.Router();
 
@@ -20,5 +22,7 @@ route.use("/experience", experienceRoutes);
 route.use("/others", othersRoutes);
 route.use("/personal-info", personalInfoRoutes);
 route.use("/skills", skillRoutes);
+route.use("/profile-progress", profileProgressRoutes);
+route.use("/certifications", certificationRoutes);
 
 export default route;

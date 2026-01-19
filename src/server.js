@@ -11,6 +11,11 @@ import logger from "./utils/logger.js";
 dotenv.config();
 connectDB();
 
+console.log(
+  "Cloudinary key:",
+  process.env.CLOUDINARY_API_KEY ? "LOADED" : "MISSING",
+);
+
 const app = express();
 
 // Middlewares

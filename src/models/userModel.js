@@ -68,8 +68,22 @@ const userSchema = new mongoose.Schema(
       select: false,
       default: "",
     },
+
+    role: {
+      type: String,
+      enum: ["user", "company"],
+      default: "user",
+    },
+
+    referralCode: String,
+    referredBy: String,
+
+    totalPoints: {
+      type: Number,
+      default: 0,
+    },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export default mongoose.model("User", userSchema);

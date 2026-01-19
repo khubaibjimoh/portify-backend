@@ -1,35 +1,70 @@
 import User from "../models/userModel.js";
 import Project from "../models/projectModel.js";
 import Template from "../models/projectModel.js";
+import Portfolio from "../models/portfolioModel.js";
 
-export const createPublicPortfolio = async (req, res) => {
+export const createPortfolio = async (req, res) => {
   try {
-    const username = req.params.username;
-    const user = await User.findOne({
-      email: new RegExp(`^${username}@`, "i"),
-    }).select("-password");
-    if (!user) return res.status(404).json({ message: "Not found" });
-    const projects = await Project.find({ owner: user._id });
-    const template = await Template.findOne({ owner: user._id });
-    res.json({ profile: user, projects, template });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Server error",
+    const existingUser = await User.findOne({ user: req.user.id });
+
+    const slug = existingUser.username;
+
+    const portfolio = await Portfolio.create({
+      user: req.user.id,
+      slug,
     });
+
+    res.status(201).json(portfolio);
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
   }
 };
 
-export const createPrivatePortfolio = async (req, res) => {
-  try {
-    const user = await User.findById(req.user.id).select("-password");
-    const projects = await Project.find({ owner: req.user.id });
-    const template = await Template.findOne({ owner: req.user.id });
-    res.json({ profile: user, projects, template });
-  } catch (error) {
-    res.status(500).json({
-      success: false,
-      message: "Server error",
-    });
-  }
+export const getMyPortfolio = async (req, res) => {
+  const portfolio = await Portfolio.findOne({ user: req.user.id });
+  res.json(portfolio);
+};
+
+export const getPublicPortfolio = async (req, res) => {
+  const portfolio = await Portfolio.findOne({ slug: req.params.slug });
+  if (!portfolio) return res.status(404).json({ message: "Not found" });
+
+  const userId = portfolio.user;
+
+  const [personalInfo, education, experience, projects, skills] =
+    await Promise.all([
+      PersonalInfo.findOne({ user: userId }),
+      Education.find({ user: userId }),
+      Experience.find({ user: userId }),
+      Project.find({ user: userId }),
+      Skill.find({ user: userId }),
+    ]);
+
+  res.json({
+    portfolio,
+    personalInfo,
+    education,
+    experience,
+    projects,
+    skills,
+  });
+};
+
+export const updatePortfolio = async (req, res) => {
+  const portfolio = await Portfolio.findOneAndUpdate(
+    { user: req.user.id },
+    req.body,
+    { new: true },
+  );
+  res.json(portfolio);
+};
+
+export const deletePortfolio = async (req, res) => {
+  await Portfolio.findOneAndDelete({ user: req.user.id });
+  res.json({ message: "Portfolio deleted" });
+};
+
+export const getMyPortfolioProgress = async (req, res) => {
+  const progress = await Portfolio.findOne({ user: req.user.id });
+  res.json(progress);
 };

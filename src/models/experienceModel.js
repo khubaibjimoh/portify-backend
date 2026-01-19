@@ -32,7 +32,6 @@ const experienceSchema = new mongoose.Schema(
 
     endDate: {
       type: Date,
-      required: [true, "End date is required"],
       trim: true,
       minlength: [3, "End date must have at least 3 characters"],
     },
@@ -53,7 +52,6 @@ const experienceSchema = new mongoose.Schema(
 
     description: {
       type: String,
-      required: [true, "Description is required"],
       trim: true,
       minlength: [3, "Description must have at least 3 characters"],
     },
@@ -64,8 +62,13 @@ const experienceSchema = new mongoose.Schema(
       trim: true,
       minlength: [3, "Professional summary must have at least 3 characters"],
     },
+
+    stillWorkingHere: {
+      type: Boolean,
+      default: false,
+    },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export default mongoose.model("Experience", experienceSchema);

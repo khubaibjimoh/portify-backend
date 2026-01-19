@@ -3,7 +3,7 @@ import { uploadToCloudinary } from "../utils/uploadToCloudinary.js";
 
 export const createProject = async (req, res) => {
   try {
-    const data = { ...req.body, owner: req.user.id };
+    const data = { ...req.body, user: req.user.id };
     const project = await Project.create(data);
     res.status(201).json(project);
   } catch (error) {
@@ -52,7 +52,7 @@ export const uploadProjectImage = async (req, res) => {
 
 export const getUserProject = async (req, res) => {
   try {
-    const projects = await Project.find({ owner: req.user.id });
+    const projects = await Project.find({ user: req.user.id });
     res.json(projects);
   } catch (error) {
     console.error("Create project error:", error);
@@ -67,7 +67,7 @@ export const getProjectById = async (req, res) => {
   try {
     const project = await Project.findOne({
       _id: req.params.id,
-      owner: req.user.id,
+      user: req.user.id,
     });
     if (!project) return res.status(404).json({ message: "Not found" });
     res.json(project);
@@ -83,9 +83,9 @@ export const getProjectById = async (req, res) => {
 export const updateProject = async (req, res) => {
   try {
     const project = await Project.findOneAndUpdate(
-      { _id: req.params.id, owner: req.user.id },
+      { _id: req.params.id, user: req.user.id },
       req.body,
-      { new: true }
+      { new: true },
     );
     if (!project) return res.status(404).json({ message: "Not found" });
     res.json(project);
@@ -102,7 +102,7 @@ export const deleteProject = async (req, res) => {
   try {
     const project = await Project.findOneAndDelete({
       _id: req.params.id,
-      owner: req.user.id,
+      user: req.user.id,
     });
     if (!project) return res.status(404).json({ message: "Not found" });
     res.json({ message: "Deleted" });

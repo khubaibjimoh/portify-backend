@@ -2,7 +2,7 @@ import Education from "../models/educationModel.js";
 
 export const createEducation = async (req, res) => {
   try {
-    const data = { ...req.body, owner: req.user.id };
+    const data = { ...req.body, user: req.user.id };
     const education = await Education.create(data);
     res.status(201).json(education);
   } catch (error) {
@@ -16,7 +16,7 @@ export const createEducation = async (req, res) => {
 
 export const getUserEducation = async (req, res) => {
   try {
-    const educations = await Education.find({ owner: req.user.id });
+    const educations = await Education.find({ user: req.user.id });
     res.json(educations);
   } catch (error) {
     console.error("Create education error:", error);
@@ -31,7 +31,7 @@ export const getEducationById = async (req, res) => {
   try {
     const education = await Education.findOne({
       _id: req.params.id,
-      owner: req.user.id,
+      user: req.user.id,
     });
     if (!education) return res.status(404).json({ message: "Not found" });
     res.json(education);
@@ -47,9 +47,9 @@ export const getEducationById = async (req, res) => {
 export const updateEducation = async (req, res) => {
   try {
     const education = await Education.findOneAndUpdate(
-      { _id: req.params.id, owner: req.user.id },
+      { _id: req.params.id, user: req.user.id },
       req.body,
-      { new: true }
+      { new: true },
     );
     if (!education) return res.status(404).json({ message: "Not found" });
     res.json(education);
@@ -66,7 +66,7 @@ export const deleteEducation = async (req, res) => {
   try {
     const education = await Education.findOneAndDelete({
       _id: req.params.id,
-      owner: req.user.id,
+      user: req.user.id,
     });
     if (!education) return res.status(404).json({ message: "Not found" });
     res.json({ message: "Deleted" });
