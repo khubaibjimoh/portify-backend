@@ -1,7 +1,7 @@
 import {
   uploadToCloudinary,
   uploadMultipleToCloudinary,
-} from "../services/MediaService.js";
+} from "../services/mediaService.js";
 
 export const uploadSingle = async (req, res, next) => {
   try {
